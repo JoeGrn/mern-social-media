@@ -37,5 +37,11 @@
     "hooks": {
       "pre-push": "npm run test && npm run lint"
     }
+  },
+  "dependencies": {
+    "@types/mongoose": "^5.10.3",
+    "apollo-server": "^2.19.1",
+    "graphql": "^15.4.0",
+    "mongoose": "^5.11.10"
   }
 }
