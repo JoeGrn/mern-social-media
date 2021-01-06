@@ -6,8 +6,6 @@ const mongoose = require('mongoose');
 
 const MONGODB = process.env.CONNECTION_STRING;
 
-console.log(MONGODB)
-
 const typeDefs = gql`
   type Query {
     sayHi: String!
