@@ -1,5 +1,12 @@
+require('dotenv').config();
+
 import { ApolloServer } from 'apollo-server';
 import gql from 'graphql-tag';
+const mongoose = require('mongoose');
+
+const MONGODB = process.env.CONNECTION_STRING;
+
+console.log(MONGODB)
 
 const typeDefs = gql`
   type Query {
@@ -18,6 +25,12 @@ const server = new ApolloServer({
   resolvers,
 });
 
-server.listen({ port: 5000 }).then((res: any) => {
-  console.log(`Server running at ${res.url}`);
-});
+mongoose
+  .connect(MONGODB, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log("Mongo DB Connected")
+    return server.listen({ port: 5000 });
+  })
+  .then((res: any) => {
+    console.log(`Server running at ${res.url}`);
+  });

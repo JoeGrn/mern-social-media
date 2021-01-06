@@ -1,11 +1,11 @@
 {
-  "name": "ts-template",
+  "name": "mern-social-media",
   "version": "1.0.0",
-  "description": "node template application",
+  "description": "mern social media app",
   "main": "index.js",
   "scripts": {
     "start": "node dist/index.js",
-    "build": "rm -r dist && tsc",
+    "build": "rm -rf dist && mkdir dist && tsc",
     "test": "jest --coverage",
     "lint": "eslint . --ext .ts"
   },
@@ -20,8 +20,10 @@
   },
   "homepage": "https://github.com/JoeGrn/node-ts-template#readme",
   "devDependencies": {
+    "@types/express": "^4.17.9",
     "@types/jest": "^26.0.19",
-    "@types/node": "^14.14.16",
+    "@types/mongoose": "^5.10.3",
+    "@types/node": "^14.14.20",
     "@typescript-eslint/eslint-plugin": "^4.11.1",
     "@typescript-eslint/parser": "^4.11.1",
     "eslint": "^7.16.0",
@@ -39,8 +41,9 @@
     }
   },
   "dependencies": {
-    "@types/mongoose": "^5.10.3",
     "apollo-server": "^2.19.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
     "graphql": "^15.4.0",
     "mongoose": "^5.11.10"
   }
