@@ -1,3 +1,5 @@
-require('dotenv').config();
+import * as dotenv from 'dotenv';
 
-export const MONGO_CONNECTION_STRING: any = process.env.MONGO_CONNECTION_STRING
+dotenv.config()
+
+export const DB_STRING: any = process.env.DB_STRING

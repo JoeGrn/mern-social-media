@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 import mongoose from 'mongoose';
 
 import Post from './models/Post';
-import { MONGO_CONNECTION_STRING } from './constants';
+import { DB_STRING } from './constants';
 
 const typeDefs = gql`
   type Post {
@@ -36,7 +36,7 @@ const server = new ApolloServer({
 });
 
 mongoose
-  .connect(MONGO_CONNECTION_STRING, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(DB_STRING, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log('Mongo DB Connected');
     return server.listen({ port: 5000 });
