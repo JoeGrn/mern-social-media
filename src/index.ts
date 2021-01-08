@@ -1,34 +1,9 @@
 import { ApolloServer } from 'apollo-server';
-import gql from 'graphql-tag';
 import mongoose from 'mongoose';
 
-import Post from './models/Post';
 import { DB_STRING } from './constants';
-
-const typeDefs = gql`
-  type Post {
-    id: ID!
-    body: String!
-    createdAt: String!
-    username: String!
-  }
-  type Query {
-    getPosts: [Post]
-  }
-`;
-
-const resolvers = {
-  Query: {
-    async getPosts() {
-      try {
-        const posts = await Post.find();
-        return posts;
-      } catch (e) {
-        console.log(e.message);
-      }
-    },
-  },
-};
+import typeDefs from './gql/typeDefs'
+import resolvers from './gql/resolvers'
 
 const server = new ApolloServer({
   typeDefs,
