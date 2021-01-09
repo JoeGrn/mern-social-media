@@ -1,27 +1,49 @@
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import { UserInputError } from 'apollo-server';
 
-import { JWT_KEY } from '../../constants';
 import User from '../../models/User';
+import { generateToken } from '../../util/generateToken';
+import {
+  validateRegisterInput,
+  validateLoginInput,
+} from '../../util/validators';
 
-// interface RegisterInput {
-//   registerInput: {
-//     username: String;
-//     email: String;
-//     password: string;
-//     confirmPassword: String;
-//   };
-// }
+interface User {
+  username: String;
+  email: String;
+  password: string;
+  confirmPassword: String;
+}
 
 export default {
   Mutation: {
-    async register(parent: any, registerInput: any, context: any, info: any) {
+    async register(parent: any, registerInput: any) {
       const {
         username,
         password,
         confirmPassword,
         email,
       } = registerInput.registerInput;
+
+      const { isValid, errors } = validateRegisterInput(
+        username,
+        email,
+        password,
+        confirmPassword,
+      );
+      if (!isValid) {
+        throw new UserInputError('Errors', { errors });
+      }
+
+      const user = await User.findOne({ username });
+      if (user) {
+        throw new UserInputError('Username Taken', {
+          errors: {
+            username: 'Username Taken',
+          },
+        });
+      }
+
       const hashedPassword: String = await bcrypt.hash(password, 12);
 
       const newUser = new User({
@@ -31,22 +53,43 @@ export default {
         createdAt: new Date().toISOString(),
       });
 
-      const response: any = await newUser.save();
+      const registeredUser: any = await newUser.save();
 
-      const token = jwt.sign(
-        {
-          id: response.id,
-          email: response.email,
-          username: response.username
-        },
-        JWT_KEY,
-        { expiresIn: '1h' },
-      );
+      const token: any = generateToken(registeredUser);
 
       return {
-        ...response._doc,
-        id: response._id,
-        token,
+        ...registeredUser._doc,
+        id: registeredUser._id,
+        token
+      };
+    },
+    async login(parent: any, loginInput: any) {
+      const { username, password } = loginInput.loginInput;
+      const { isValid, errors } = validateLoginInput(username, password);
+
+      if (!isValid) {
+        throw new UserInputError('Errors', { errors });
+      }
+
+      const user: any = await User.findOne({ username });
+
+      if (!user) {
+        errors.general = 'Username not found';
+        throw new UserInputError('Invalid Username', { errors });
+      }
+
+      const match: any = await bcrypt.compare(password, user.password);
+      if (!match) {
+        errors.general = 'Invalid Password';
+        throw new UserInputError('Invalid Password', { errors });
+      }
+
+      const token: any = generateToken(user);
+
+      return {
+        ...user._doc,
+        id: user._id,
+        token
       };
     },
   },
