@@ -17,13 +17,13 @@ interface User {
 
 export default {
   Mutation: {
-    async register(parent: any, registerInput: any) {
+    async register(parent: any, args: any) {
       const {
         username,
         password,
         confirmPassword,
         email,
-      } = registerInput.registerInput;
+      } = args.registerInput;
 
       const { isValid, errors } = validateRegisterInput(
         username,
@@ -63,8 +63,8 @@ export default {
         token
       };
     },
-    async login(parent: any, loginInput: any) {
-      const { username, password } = loginInput.loginInput;
+    async login(parent: any, args: any) {
+      const { username, password } = args.loginInput;
       const { isValid, errors } = validateLoginInput(username, password);
 
       if (!isValid) {
