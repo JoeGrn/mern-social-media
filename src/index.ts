@@ -2,12 +2,13 @@ import { ApolloServer } from 'apollo-server';
 import mongoose from 'mongoose';
 
 import { DB_STRING } from './constants';
-import typeDefs from './gql/typeDefs'
-import resolvers from './gql/resolvers'
+import typeDefs from './gql/typeDefs';
+import resolvers from './gql/resolvers';
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  context: ({ req }) => ({ req }),
 });
 
 mongoose
