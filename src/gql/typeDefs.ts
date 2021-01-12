@@ -6,6 +6,8 @@ const typeDefs = gql`
     body: String!
     createdAt: String!
     username: String!
+    comments: [Comment]!
+    likes: [Like]!
   }
   type User {
     id: ID!
@@ -13,6 +15,17 @@ const typeDefs = gql`
     token: String!
     username: String!
     createdAt: String!
+  }
+  type Comment {
+    id: ID!
+    createdAt: String!
+    username: String!
+    body: String!
+  }
+  type Like {
+    id: ID!
+    createdAt: String!
+    username: String!
   }
   input RegisterInput {
     username: String!
@@ -24,6 +37,10 @@ const typeDefs = gql`
     username: String!
     password: String!
   }
+  input CommentInput {
+    postId: ID!
+    body: String!
+  }
   type Query {
     getPosts: [Post]
     getPost(postId: ID!): Post
@@ -33,6 +50,9 @@ const typeDefs = gql`
     login(loginInput: LoginInput): User!
     createPost(body: String!): Post!
     deletePost(postId: ID!): String!
+    createComment(commentInput: CommentInput): Post!
+    deleteComment(postId: ID!, commentId: ID!): Post!
+    likePost(postId: ID!): Post!
   }
 `;
 

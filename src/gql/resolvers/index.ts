@@ -1,5 +1,7 @@
 import postsResolvers from './posts'
 import usersResolvers from './users'
+import commentsResolvers from './comments'
+
 
 export = {
     Query: {
@@ -8,5 +10,6 @@ export = {
     Mutation: {
         ...usersResolvers.Mutation,
         ...postsResolvers.Mutation,
+        ...commentsResolvers.Mutation,
     }
 }
