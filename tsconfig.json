@@ -12,6 +12,6 @@
     "types": [],
     "typeRoots": ["node_modules/@types"]
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", ".eslintrc.json"],
   "exclude": ["node_modules", "**/__tests__/*"]
 }
