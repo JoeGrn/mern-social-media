@@ -4,6 +4,10 @@ import commentsResolvers from './comments'
 
 
 export = {
+    Post: {
+        likeCount: (parent: any) => parent.likes.length,
+        commentCount: (parent:any) => parent.comments.length
+    },
     Query: {
         ...postsResolvers.Query
     },
