@@ -41,8 +41,8 @@ export default {
       const post = await newPost.save();
 
       context.pubsub.publish('NEW_POST', {
-        newPost: post
-      })
+        newPost: post,
+      });
 
       return post;
     },
@@ -91,7 +91,8 @@ export default {
   },
   Subscription: {
     newPost: {
-      subscribe: (parent: any, args: any, pubsub: any) => pubsub.pubsub.asyncIterator('NEW_POST')
-    }
-  }
+      subscribe: (parent: any, args: any, pubsub: any) =>
+        pubsub.pubsub.asyncIterator('NEW_POST'),
+    },
+  },
 };
