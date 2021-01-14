@@ -2,6 +2,7 @@ import { AuthenticationError, UserInputError } from 'apollo-server';
 
 import Post from '../../models/Post';
 import checkAuth from '../../util/checkAuth';
+import { AuthedUser } from '../../util/types';
 
 export default {
   Query: {
@@ -28,8 +29,8 @@ export default {
   },
   Mutation: {
     async createPost(parent: any, args: any, context: any) {
-      const user: any = checkAuth(context);
-      const body: any = args.body;
+      const user: AuthedUser = checkAuth(context);
+      const body: String = args.body;
 
       const newPost = new Post({
         body,
@@ -47,8 +48,8 @@ export default {
       return post;
     },
     async deletePost(parent: any, args: any, context: any) {
-      const user: any = checkAuth(context);
-      const postId: any = args.postId;
+      const user: AuthedUser = checkAuth(context);
+      const postId: String = args.postId;
 
       try {
         const post: any = await Post.findById(postId);
@@ -63,8 +64,8 @@ export default {
       }
     },
     async likePost(parent: any, args: any, context: any) {
-      const user: any = checkAuth(context);
-      const postId: any = args.postId;
+      const user: AuthedUser = checkAuth(context);
+      const postId: String = args.postId;
 
       let post: any = await Post.findById(postId);
 

@@ -2,7 +2,6 @@ import postsResolvers from './posts'
 import usersResolvers from './users'
 import commentsResolvers from './comments'
 
-
 export = {
     Post: {
         likeCount: (parent: any) => parent.likes.length,

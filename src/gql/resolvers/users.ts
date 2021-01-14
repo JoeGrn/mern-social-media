@@ -8,13 +8,6 @@ import {
   validateLoginInput,
 } from '../../util/validators';
 
-interface User {
-  username: String;
-  email: String;
-  password: string;
-  confirmPassword: String;
-}
-
 export default {
   Mutation: {
     async register(parent: any, args: any) {
@@ -78,13 +71,13 @@ export default {
         throw new UserInputError('Invalid Username', { errors });
       }
 
-      const match: any = await bcrypt.compare(password, user.password);
+      const match: Boolean = await bcrypt.compare(password, user.password);
       if (!match) {
         errors.general = 'Invalid Password';
         throw new UserInputError('Invalid Password', { errors });
       }
 
-      const token: any = generateToken(user);
+      const token: String = generateToken(user);
 
       return {
         ...user._doc,
