@@ -40,6 +40,10 @@ export default {
 
       const post = await newPost.save();
 
+      context.pubsub.publish('NEW_POST', {
+        newPost: post
+      })
+
       return post;
     },
     async deletePost(parent: any, args: any, context: any) {
@@ -69,16 +73,13 @@ export default {
           post.likes = post.likes.filter(
             (like: any) => like.username !== user.username,
           );
-          console.log(post.likes);
           await post.save();
         } else {
-          console.log('add');
           post.likes.push({
             username: user.username,
             createdAt: new Date().toISOString(),
           });
         }
-        console.log(post.likes);
 
         await post.save();
 
@@ -88,4 +89,9 @@ export default {
       }
     },
   },
+  Subscription: {
+    newPost: {
+      subscribe: (parent: any, args: any, pubsub: any) => pubsub.pubsub.asyncIterator('NEW_POST')
+    }
+  }
 };

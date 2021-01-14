@@ -1,14 +1,16 @@
-import { ApolloServer } from 'apollo-server';
+import { ApolloServer, PubSub } from 'apollo-server';
 import mongoose from 'mongoose';
 
 import { DB_STRING } from './constants';
 import typeDefs from './gql/typeDefs';
 import resolvers from './gql/resolvers';
 
+const pubsub = new PubSub();
+
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req }) => ({ req }),
+  context: ({ req }) => ({ req, pubsub }),
 });
 
 mongoose
