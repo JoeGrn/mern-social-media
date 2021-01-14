@@ -32,6 +32,10 @@ export default {
       const user: AuthedUser = checkAuth(context);
       const body: String = args.body;
 
+      if(body.trim() === '') {
+        throw new UserInputError('Post body cannot be empty')
+      }
+
       const newPost = new Post({
         body,
         user: user.id,
