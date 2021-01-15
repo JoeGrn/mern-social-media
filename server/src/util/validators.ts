@@ -3,6 +3,7 @@ interface Errors {
   email?: String
   password?: String
   confirmPassword?: String
+  general?: String
 }
 
 export const validateRegisterInput = (

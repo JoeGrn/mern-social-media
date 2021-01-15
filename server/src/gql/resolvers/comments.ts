@@ -42,7 +42,8 @@ export default {
           (c: any) => c.id === commentId,
         );
 
-        if (commentIndex === -1) throw new AuthenticationError('Action not allowed');
+        if (commentIndex === -1)
+          throw new AuthenticationError('Action not allowed');
 
         if (post.comments[commentIndex].username === user.username) {
           post.comments.splice(commentIndex, 1);
