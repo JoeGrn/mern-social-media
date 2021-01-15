@@ -1,4 +1,7 @@
+import React from 'react';
 import './App.css';
+
+import client from './ApolloProvider'
 
 function App() {
   return (
