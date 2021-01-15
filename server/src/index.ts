@@ -1,7 +1,7 @@
 import { ApolloServer, PubSub } from 'apollo-server';
 import mongoose from 'mongoose';
 
-import { DB_STRING } from './constants';
+import { DB_STRING, PORT } from './constants';
 import typeDefs from './gql/typeDefs';
 import resolvers from './gql/resolvers';
 
@@ -17,8 +17,8 @@ mongoose
   .connect(DB_STRING, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log('Mongo DB Connected');
-    return server.listen({ port: 5000 });
+    return server.listen(PORT);
   })
-  .then((res: any) => {
+  .then((res) => {
     console.log(`Server running at ${res.url}`);
   });

@@ -1,10 +1,17 @@
+interface Errors {
+  username?: String
+  email?: String
+  password?: String
+  confirmPassword?: String
+}
+
 export const validateRegisterInput = (
   username: String,
   email: String,
   password: String,
   confirmPassword: String,
 ) => {
-  const errors: any = {};
+  const errors: Errors = {};
 
   if (username.trim() === '') {
     errors.username = 'Username cannot be empty';
@@ -30,7 +37,7 @@ export const validateRegisterInput = (
 };
 
 export const validateLoginInput = (username: String, password: String) => {
-  const errors: any = {};
+  const errors: Errors = {};
 
   if (username.trim() === '') {
     errors.username = 'Username cannot be empty';

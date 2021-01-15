@@ -2,7 +2,6 @@ import { AuthenticationError, UserInputError } from 'apollo-server';
 
 import Post from '../../models/Post';
 import checkAuth from '../../util/checkAuth';
-import { AuthedUser } from '../../util/types';
 
 export default {
   Query: {
@@ -29,11 +28,11 @@ export default {
   },
   Mutation: {
     async createPost(parent: any, args: any, context: any) {
-      const user: AuthedUser = checkAuth(context);
+      const user: any = checkAuth(context);
       const body: String = args.body;
 
-      if(body.trim() === '') {
-        throw new UserInputError('Post body cannot be empty')
+      if (body.trim() === '') {
+        throw new UserInputError('Post body cannot be empty');
       }
 
       const newPost = new Post({
@@ -52,7 +51,7 @@ export default {
       return post;
     },
     async deletePost(parent: any, args: any, context: any) {
-      const user: AuthedUser = checkAuth(context);
+      const user: any = checkAuth(context);
       const postId: String = args.postId;
 
       try {
@@ -68,7 +67,7 @@ export default {
       }
     },
     async likePost(parent: any, args: any, context: any) {
-      const user: AuthedUser = checkAuth(context);
+      const user: any = checkAuth(context);
       const postId: String = args.postId;
 
       let post: any = await Post.findById(postId);
