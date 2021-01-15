@@ -1,16 +1,16 @@
 interface Errors {
-  username?: String
-  email?: String
-  password?: String
-  confirmPassword?: String
-  general?: String
+  username?: string
+  email?: string
+  password?: string
+  confirmPassword?: string
+  general?: string
 }
 
 export const validateRegisterInput = (
-  username: String,
-  email: String,
-  password: String,
-  confirmPassword: String,
+  username: string,
+  email: string,
+  password: string,
+  confirmPassword: string,
 ) => {
   const errors: Errors = {};
 
@@ -37,7 +37,7 @@ export const validateRegisterInput = (
   };
 };
 
-export const validateLoginInput = (username: String, password: String) => {
+export const validateLoginInput = (username: string, password: string) => {
   const errors: Errors = {};
 
   if (username.trim() === '') {

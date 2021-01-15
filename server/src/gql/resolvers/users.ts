@@ -37,7 +37,7 @@ export default {
         });
       }
 
-      const hashedPassword: String = await bcrypt.hash(password, 12);
+      const hashedPassword: string = await bcrypt.hash(password, 12);
 
       const newUser = new User({
         email: email,
@@ -48,7 +48,7 @@ export default {
 
       const registeredUser: any = await newUser.save();
 
-      const token: any = generateToken(registeredUser);
+      const token: string = generateToken(registeredUser);
 
       return {
         ...registeredUser._doc,
@@ -71,13 +71,13 @@ export default {
         throw new UserInputError('Invalid Username', { errors });
       }
 
-      const match: Boolean = await bcrypt.compare(password, user.password);
+      const match: boolean = await bcrypt.compare(password, user.password);
       if (!match) {
         errors.general = 'Invalid Password';
         throw new UserInputError('Invalid Password', { errors });
       }
 
-      const token: String = generateToken(user);
+      const token: string = generateToken(user);
 
       return {
         ...user._doc,
