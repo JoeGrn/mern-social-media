@@ -12,5 +12,5 @@ declare const process: {
 export const DB_STRING: string = process.env.DB_STRING;
 export const JWT_KEY: string = process.env.JWT_KEY;
 
-export const PORT: Number = 5000
+export const PORT: number = 5000
 

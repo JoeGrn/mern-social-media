@@ -3,7 +3,7 @@ import { AuthenticationError } from 'apollo-server'
 
 import { JWT_KEY } from '../constants'
 
-export default (context: any): Object => {
+export default (context: any): any => {
     const authHeader = context.req.headers.authorization;
     if (authHeader) {
         const token = authHeader.split('Bearer ')[1];

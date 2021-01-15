@@ -14,7 +14,7 @@ export default {
       }
     },
     async getPost(parent: any, args: any) {
-      const postId: String = args.postId;
+      const postId: string = args.postId;
       try {
         const post = await Post.findById(postId);
         if (!post) {
@@ -29,7 +29,7 @@ export default {
   Mutation: {
     async createPost(parent: any, args: any, context: any) {
       const user: any = checkAuth(context);
-      const body: String = args.body;
+      const body: string = args.body;
 
       if (body.trim() === '') {
         throw new UserInputError('Post body cannot be empty');
@@ -52,7 +52,7 @@ export default {
     },
     async deletePost(parent: any, args: any, context: any) {
       const user: any = checkAuth(context);
-      const postId: String = args.postId;
+      const postId: string = args.postId;
 
       try {
         const post: any = await Post.findById(postId);
@@ -68,7 +68,7 @@ export default {
     },
     async likePost(parent: any, args: any, context: any) {
       const user: any = checkAuth(context);
-      const postId: String = args.postId;
+      const postId: string = args.postId;
 
       let post: any = await Post.findById(postId);
 
