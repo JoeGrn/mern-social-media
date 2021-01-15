@@ -7,9 +7,6 @@ const NavBar = () => {
   const path = pathName === '/' ? 'home' : pathName.substr(1);
   const [activeItem, setActiveItem] = useState(path);
 
-  console.log(activeItem)
-  console.log(pathName)
-
   const handleItemClick = (e: any, { name }: any) => setActiveItem(name);
 
   return (
