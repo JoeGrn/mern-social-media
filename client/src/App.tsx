@@ -1,6 +1,10 @@
 import React from "react";
-import "./App.css";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+
+import "semantic-ui-css/semantic.min.css";
+import "./App.css";
+
+import Routes from './Routes';
 
 const client = new ApolloClient({
   uri: "http://localhost:5000",
@@ -10,9 +14,7 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
-      <div className="App">
-        <h1>Hello World</h1>
-      </div>
+      <Routes />
     </ApolloProvider>
   );
 }
