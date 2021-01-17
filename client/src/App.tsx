@@ -6,18 +6,21 @@ import "semantic-ui-css/semantic.min.css";
 import "./App.css";
 
 import Routes from "./Routes";
+import { AuthProvider } from "./context/auth";
 
 const client = new ApolloClient({
   uri: "http://localhost:5000",
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
 });
 
 function App() {
   return (
     <ApolloProvider client={client}>
-      <Container>
-        <Routes />
-      </Container>
+      <AuthProvider>
+        <Container>
+          <Routes />
+        </Container>
+      </AuthProvider>
     </ApolloProvider>
   );
 }
