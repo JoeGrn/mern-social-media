@@ -1,9 +1,96 @@
-import React from 'react';
+import React, { useState } from "react";
+import { Form, Button } from "semantic-ui-react";
+import gql from "graphql-tag";
+import { useMutation } from "@apollo/client";
 
-const Login = () => {
+import { useForm } from "../hooks/useForm";
+
+const Login = (props: any) => {
+  const [errors, setErrors]: any = useState({});
+
+  const { onChange, onSubmit, values } = useForm(loginUserCallback, {
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const [loginUser, { loading }] = useMutation(LOGIN_USER_MUTATION, {
+    update(proxy, result) {
+      props.history.push("/");
+    },
+    onError(error: any) {
+      setErrors(error.graphQLErrors[0].extensions.exception.errors);
+    },
+    variables: values,
+  });
+
+  function loginUserCallback() {
+    loginUser();
+  }
+
+  const renderErrors = () => {
     return (
-        <div>Login Page</div>
-    )
-}
+      <div className="ui error message">
+        <ul className="list">
+          {Object.values(errors).map((value: any) => (
+            <li key={value}>{value}</li>
+          ))}
+        </ul>
+      </div>
+    );
+  };
 
-export default Login
+  return (
+    <div className="form-container">
+      <Form onSubmit={onSubmit} noValidate className={loading ? "loading" : ""}>
+        <h1>Login</h1>
+        <Form.Input
+          label="Username"
+          placeholder="Username"
+          name="username"
+          type="text"
+          error={errors.username ? true : false}
+          value={values.username}
+          onChange={onChange}
+        />
+        <Form.Input
+          label="Password"
+          placeholder="Password"
+          name="password"
+          type="password"
+          error={errors.password ? true : false}
+          value={values.password}
+          onChange={onChange}
+        />
+        <Button type="submit" primary>
+          Login
+        </Button>
+      </Form>
+      {Object.keys(errors).length > 0 && renderErrors()}
+    </div>
+  );
+};
+
+const LOGIN_USER_MUTATION = gql`
+  mutation login(
+    $username: String!
+    $password: String!
+  ) {
+    login(
+      loginInput: {
+        username: $username
+        password: $password
+      }
+    ) {
+      id
+      username
+      email
+      token
+      createdAt
+    }
+  }
+`;
+
+export default Login;
+

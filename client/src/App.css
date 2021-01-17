@@ -3,3 +3,8 @@
   text-align: center;
   font-size: 2rem;
 }
+
+.form-container {
+  width: 400px;
+  margin: auto;
+}
