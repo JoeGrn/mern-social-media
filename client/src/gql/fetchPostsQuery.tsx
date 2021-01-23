@@ -21,5 +21,3 @@ export const FETCH_POSTS_QUERY = gql`
     }
   }
 `;
-
-FETCH_POSTS_QUERY
