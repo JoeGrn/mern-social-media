@@ -48,7 +48,7 @@ const typeDefs = gql`
     login(loginInput: LoginInput): User!
     createPost(body: String!): Post!
     deletePost(postId: ID!): String!
-    createComment(postId: ID!, body: String!): Post!
+    createComment(postId: String!, body: String!): Post!
     deleteComment(postId: ID!, commentId: ID!): Post!
     likePost(postId: ID!): Post!
   }

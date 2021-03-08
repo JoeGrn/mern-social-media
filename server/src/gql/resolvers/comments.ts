@@ -6,7 +6,7 @@ import checkAuth from '../../util/checkAuth';
 export default {
   Mutation: {
     async createComment(parent: any, args: any, context: any) {
-      const { postId, body } = args.commentInput;
+      const { postId, body } = args;
       const user: any = checkAuth(context);
 
       if (body.trim() === '') {
