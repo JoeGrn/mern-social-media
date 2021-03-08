@@ -7,42 +7,42 @@ import { useForm } from "../hooks/useForm";
 import { FETCH_POSTS_QUERY } from "../gql/fetchPostsQuery";
 
 const PostForm = (): JSX.Element => {
-  const { values, onChange, onSubmit } = useForm(createPostCallback, {
-    body: "",
-  });
-  const [error, setError]: any = useState(null);
+    const { values, onChange, onSubmit } = useForm(createPostCallback, {
+        body: "",
+    });
+    const [error, setError] = useState(null);
 
-  const [createPost] = useMutation(CREATE_POST_MUTATION, {
-    variables: values,
-    refetchQueries: [{ query: FETCH_POSTS_QUERY }],
-    onError(error: any) {
-      setError(error.graphQLErrors[0].message);
-    },
-  });
+    const [createPost] = useMutation(CREATE_POST_MUTATION, {
+        variables: values,
+        refetchQueries: [{ query: FETCH_POSTS_QUERY }],
+        onError(error: any) {
+            setError(error.graphQLErrors[0].message);
+        },
+    });
 
-  function createPostCallback() {
-    createPost();
-  }
+    function createPostCallback() {
+        createPost();
+    }
 
-  return (
-    <>
-      <Form onSubmit={onSubmit}>
-        <h2>Create a post:</h2>
-        <Form.Field>
-          <Form.Input
-            placeholder="Write a Post!"
-            name="body"
-            onChange={onChange}
-            value={values.body}
-            error={error}
-          />
-          <Button type="submit" color="blue">
-            Submit
+    return (
+        <>
+            <Form onSubmit={onSubmit}>
+                <h2>Create a post:</h2>
+                <Form.Field>
+                    <Form.Input
+                        placeholder="Write a Post!"
+                        name="body"
+                        onChange={onChange}
+                        value={values.body}
+                        error={error}
+                    />
+                    <Button type="submit" color="blue">
+                        Submit
           </Button>
-        </Form.Field>
-      </Form>
-    </>
-  );
+                </Form.Field>
+            </Form>
+        </>
+    );
 };
 
 const CREATE_POST_MUTATION = gql`
