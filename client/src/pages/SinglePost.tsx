@@ -5,12 +5,14 @@ import { Grid, Card, Button, Icon, Label } from 'semantic-ui-react';
 import moment from 'moment';
 
 import { AuthContext } from '../context/auth';
-import LikeButton from '../components/LikeButton';
+// import LikeButton from '../components/LikeButton';
+import DeleteButton from '../components/DeleteButton';
 interface PropTypes {
     postId: number
+    history: any
 }
 
-const SinglePost = ({ postId }: PropTypes): any => {
+const SinglePost = ({ postId, history }: PropTypes): JSX.Element => {
     const user: any = useContext(AuthContext)
     const { data: { getPost } } = useQuery(FETCH_POST_QUERY, {
         variables: {
@@ -18,11 +20,15 @@ const SinglePost = ({ postId }: PropTypes): any => {
         }
     })
 
+    const deletePostCallback = () => {
+        history.push('/')
+    }
+
     let postMarkup;
     if (!getPost) {
         postMarkup = <p>Loading...</p>
     } else {
-        const { id, body, createdAt, username, comments, likes, likeCount, commentCount } = getPost;
+        const { id, body, createdAt, username, likes, likeCount, commentCount } = getPost;
         postMarkup = (
             <Grid>
                 <Grid.Row>
@@ -50,12 +56,15 @@ const SinglePost = ({ postId }: PropTypes): any => {
                                     </Label>
                                 </Button>
                             </Button>
+                            {user && user.username === username && <DeleteButton postId={id} callback={deletePostCallback}/>}
                         </Card.Content>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
         )
     }
+
+    return postMarkup;
 }
 
 const SUBMIT_COMMENT_MUTATION = gql`

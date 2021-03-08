@@ -18,7 +18,7 @@ const Register = (props: any): JSX.Element => {
   });
 
   const [addUser, { loading }] = useMutation(REGISTER_USER_MUTATION, {
-    update(proxy, result) {
+    update(cache, result) {
       context.login(result.data.register)
       props.history.push("/");
     },
