@@ -5,16 +5,17 @@ import { Grid, Card, Button, Icon, Label } from 'semantic-ui-react';
 import moment from 'moment';
 
 import { AuthContext } from '../context/auth';
-// import LikeButton from '../components/LikeButton';
+import LikeButton from '../components/LikeButton';
 import DeleteButton from '../components/DeleteButton';
 interface PropTypes {
-    postId: number
+    match: any
     history: any
 }
 
-const SinglePost = ({ postId, history }: PropTypes): JSX.Element => {
+const SinglePost = ({ match, history }: PropTypes): JSX.Element => {
+    const postId = match.params.postId
     const user: any = useContext(AuthContext)
-    const { data: { getPost } } = useQuery(FETCH_POST_QUERY, {
+    const { data, loading } = useQuery(FETCH_POST_QUERY, {
         variables: {
             postId
         }
@@ -25,10 +26,21 @@ const SinglePost = ({ postId, history }: PropTypes): JSX.Element => {
     }
 
     let postMarkup;
-    if (!getPost) {
+    if (loading) {
         postMarkup = <p>Loading...</p>
     } else {
-        const { id, body, createdAt, username, likes, likeCount, commentCount } = getPost;
+        console.log(data)
+        const { getPost } = data
+        const {
+            id,
+            body,
+            createdAt,
+            username,
+            likes,
+            likeCount,
+            commentCount
+        } = getPost;
+
         postMarkup = (
             <Grid>
                 <Grid.Row>
@@ -38,12 +50,17 @@ const SinglePost = ({ postId, history }: PropTypes): JSX.Element => {
                     <Grid.Column width={10}>
                         <Card.Content>
                             <Card.Header>{username}</Card.Header>
-                            <Card.Meta>{moment(createdAt)}</Card.Meta>
+                            <Card.Meta>{moment(createdAt).fromNow()}</Card.Meta>
                             <Card.Description>{body}</Card.Description>
                         </Card.Content>
                         <hr />
                         <Card.Content extra>
-                            {/* <LikeButton user={user} post={{ id, likeCount, likes }} /> */}
+                            <LikeButton
+                                user={user}
+                                id={id}
+                                likeCount={likeCount}
+                                likes={likes}
+                            />
                             <Button
                                 as="div"
                                 labelPosition="right"
@@ -56,7 +73,13 @@ const SinglePost = ({ postId, history }: PropTypes): JSX.Element => {
                                     </Label>
                                 </Button>
                             </Button>
-                            {user && user.username === username && <DeleteButton postId={id} callback={deletePostCallback}/>}
+                            {user
+                                && user.username === username
+                                && <DeleteButton
+                                    postId={id}
+                                    callback={deletePostCallback}
+                                />
+                            }
                         </Card.Content>
                     </Grid.Column>
                 </Grid.Row>
