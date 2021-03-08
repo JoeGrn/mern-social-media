@@ -22,7 +22,7 @@ export default {
         post.comments.unshift({
           body,
           username: user.username,
-          createAt: new Date().toISOString(),
+          createdAt: new Date().toISOString(),
         });
         await post.save();
 

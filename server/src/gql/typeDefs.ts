@@ -20,7 +20,7 @@ const typeDefs = gql`
   }
   type Comment {
     id: ID!
-    createdAt: String!
+    createdAt: String
     username: String!
     body: String!
   }
@@ -39,10 +39,6 @@ const typeDefs = gql`
     username: String!
     password: String!
   }
-  input CommentInput {
-    postId: ID!
-    body: String!
-  }
   type Query {
     getPosts: [Post]
     getPost(postId: ID!): Post
@@ -52,7 +48,7 @@ const typeDefs = gql`
     login(loginInput: LoginInput): User!
     createPost(body: String!): Post!
     deletePost(postId: ID!): String!
-    createComment(commentInput: CommentInput): Post!
+    createComment(postId: ID!, body: String!): Post!
     deleteComment(postId: ID!, commentId: ID!): Post!
     likePost(postId: ID!): Post!
   }
