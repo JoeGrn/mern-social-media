@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 import { AuthContext } from "../context/auth";
 
-const NavBar = () => {
+const NavBar = (): JSX.Element => {
   const pathName = window.location.pathname;
   const path = pathName === "/" ? "home" : pathName.substr(1);
   const [activeItem, setActiveItem] = useState(path);

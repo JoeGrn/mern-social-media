@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { useQuery } from "@apollo/client";
-import { Grid } from "semantic-ui-react";
+import { Grid, Transition } from "semantic-ui-react";
 
 import "../App.css";
 
@@ -9,7 +9,7 @@ import Post from "../components/Post";
 import PostForm from "../components/PostForm";
 import { FETCH_POSTS_QUERY } from "../gql/fetchPostsQuery";
 
-const Home = () => {
+const Home = (): JSX.Element => {
   const { loading, data } = useQuery(FETCH_POSTS_QUERY);
   const { user } = useContext(AuthContext);
 
@@ -29,12 +29,14 @@ const Home = () => {
         {loading ? (
           <h1>Loading Posts...</h1>
         ) : (
-          posts &&
-          posts.map((post: any) => (
-            <Grid.Column key={post.id} style={{ marginBottom: 20 }}>
-              <Post post={post} />
-            </Grid.Column>
-          ))
+            <Transition.Group>
+            {posts &&
+              posts.map((post: any) => (
+                <Grid.Column key={post.id} style={{ marginBottom: 20 }}>
+                  <Post post={post} />
+                </Grid.Column>
+              ))}
+          </Transition.Group>
         )}
       </Grid.Row>
     </Grid>

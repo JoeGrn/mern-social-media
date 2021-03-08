@@ -6,7 +6,7 @@ import { useMutation } from "@apollo/client";
 import { useForm } from "../hooks/useForm";
 import { FETCH_POSTS_QUERY } from "../gql/fetchPostsQuery";
 
-const PostForm = () => {
+const PostForm = (): JSX.Element => {
   const { values, onChange, onSubmit } = useForm(createPostCallback, {
     body: "",
   });

@@ -6,7 +6,7 @@ import { useMutation } from "@apollo/client";
 import { useForm } from "../hooks/useForm";
 import { AuthContext } from '../context/auth'
 
-const Register = (props: any) => {
+const Register = (props: any): JSX.Element => {
   const context: any = useContext(AuthContext)
   const [errors, setErrors]: any = useState({});
 
