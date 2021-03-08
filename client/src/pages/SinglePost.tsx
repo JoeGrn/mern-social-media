@@ -3,13 +3,16 @@ import gql from 'graphql-tag';
 import { useQuery, useMutation } from '@apollo/client';
 import { Grid, Card, Button, Icon, Label, Form } from 'semantic-ui-react';
 import moment from 'moment';
+import { RouteComponentProps } from "react-router-dom";
+
 
 import { AuthContext } from '../context/auth';
 import LikeButton from '../components/LikeButton';
 import DeleteButton from '../components/DeleteButton';
-interface PropTypes {
-    match: any
-    history: any
+interface MatchParams {
+    postId: string
+}
+interface PropTypes extends RouteComponentProps<MatchParams> {
 }
 
 const SinglePost = ({ match, history }: PropTypes): JSX.Element => {
@@ -113,6 +116,8 @@ const SinglePost = ({ match, history }: PropTypes): JSX.Element => {
                         )}
                         {comments.map((comment: any) => (
                             <Card fluid key={comment.id}>
+                                {console.log(comment)}
+
                                 <Card.Content>
                                     {user && user.username === comment.username && (
                                         <DeleteButton postId={id} commentId={comment.id} />
