@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/client";
 
+import HoverText from './HoverText'
+
 interface PropTypes {
     user: {
         username: string
@@ -43,12 +45,25 @@ const LikeButton = ({ user, id, likes, likeCount }: PropTypes): JSX.Element => {
         );
 
     return (
-        <Button as="div" labelPosition="right" onClick={likePost}>
-            {likeButton}
-            <Label basic color="blue" pointing="left">
-                {likeCount}
-            </Label>
-        </Button>
+        <HoverText
+            content={isLiked ? "Unlike" : "Like"}
+        >
+            <Button
+                as="div"
+                labelPosition="right"
+                onClick={likePost}
+            >
+                {likeButton}
+                <Label
+                    basic
+                    color="blue"
+                    pointing="left"
+                >
+                    {likeCount}
+                </Label>
+            </Button>
+        </HoverText>
+
     );
 };
 

@@ -4,6 +4,7 @@ import { useMutation } from '@apollo/client'
 import { Button, Icon, Confirm } from 'semantic-ui-react'
 
 import { FETCH_POSTS_QUERY } from '../gql/fetchPostsQuery';
+import HoverText from './HoverText'
 
 interface PropTypes {
     postId?: string
@@ -38,14 +39,22 @@ const DeleteButton = ({ postId, commentId, callback }: PropTypes): JSX.Element =
 
     return (
         <>
-            <Button
-                as="div"
-                color="red"
-                floated="right"
-                onClick={() => setConfirmOpen(true)}
+            <HoverText
+                content={
+                    commentId
+                        ? 'Delete comment'
+                        : 'Delete post'
+                }
             >
-                <Icon name="trash" style={{ margin: 0 }} />
-            </Button>
+                <Button
+                    as="div"
+                    color="red"
+                    floated="right"
+                    onClick={() => setConfirmOpen(true)}
+                >
+                    <Icon name="trash" style={{ margin: 0 }} />
+                </Button>
+            </HoverText>
             <Confirm
                 open={confirmOpen}
                 onCancel={() => setConfirmOpen(false)}

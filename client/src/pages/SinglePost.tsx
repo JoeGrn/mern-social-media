@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useRef } from 'react';
 import gql from 'graphql-tag';
 import { useQuery, useMutation } from '@apollo/client';
 import { Grid, Card, Button, Icon, Label, Form } from 'semantic-ui-react';
@@ -18,6 +18,7 @@ interface PropTypes extends RouteComponentProps<MatchParams> {
 const SinglePost = ({ match, history }: PropTypes): JSX.Element => {
     const postId = match.params.postId
     const user: any = useContext(AuthContext)
+    const commentInputRef: any = useRef(null);
     const [comment, setComment] = useState('');
 
     const { data, loading } = useQuery(FETCH_POST_QUERY, {
@@ -28,6 +29,7 @@ const SinglePost = ({ match, history }: PropTypes): JSX.Element => {
     const [submitComment] = useMutation(SUBMIT_COMMENT_MUTATION, {
         update() {
             setComment('');
+            commentInputRef.current.blur();
         },
         variables: {
             postId,
@@ -73,7 +75,6 @@ const SinglePost = ({ match, history }: PropTypes): JSX.Element => {
                                 <Button
                                     as="div"
                                     labelPosition="right"
-                                    onClick={() => console.log('Comment on post')}
                                 >
                                     <Button basic color="blue">
                                         <Icon name="comments" />
@@ -99,6 +100,7 @@ const SinglePost = ({ match, history }: PropTypes): JSX.Element => {
                                                 name="comment"
                                                 value={comment}
                                                 onChange={(event) => setComment(event.target.value)}
+                                                ref={commentInputRef}
                                             />
                                             <button
                                                 type="submit"
