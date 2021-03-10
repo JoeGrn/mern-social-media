@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
-import gql from 'graphql-tag';
 import { useMutation } from '@apollo/client'
 import { Button, Icon, Confirm } from 'semantic-ui-react'
 
-import { FETCH_POSTS_QUERY } from '../gql/fetchPostsQuery';
+import { FETCH_POSTS_QUERY, DELETE_POST_MUTATION, DELETE_COMMENT_MUTATION } from '../gql';
 import HoverText from './HoverText'
 
-interface PropTypes {
+import { IPost } from '../types/types'
+
+interface Props {
     postId?: string
     commentId?: string
     callback?: any
 }
 
-const DeleteButton = ({ postId, commentId, callback }: PropTypes): JSX.Element => {
+const DeleteButton = ({ postId, commentId, callback }: Props ): JSX.Element => {
     const mutation = commentId ? DELETE_COMMENT_MUTATION : DELETE_POST_MUTATION;
 
     const [confirmOpen, setConfirmOpen] = useState(false)
@@ -20,10 +21,11 @@ const DeleteButton = ({ postId, commentId, callback }: PropTypes): JSX.Element =
         update(cache) {
             setConfirmOpen(false)
             if (!commentId) {
-                const data: any = cache.readQuery({
+                const cacheResponse: any = cache.readQuery({
                     query: FETCH_POSTS_QUERY
                 })
-                const postToDelete = data.getPosts.filter((post: any) => post.id === postId);
+                console.log(cacheResponse)
+                const postToDelete = cacheResponse.getPosts.filter((post: IPost) => post.id === postId);
                 cache.evict(postToDelete[0].id)
                 cache.gc()
             }
@@ -63,26 +65,5 @@ const DeleteButton = ({ postId, commentId, callback }: PropTypes): JSX.Element =
         </>
     );
 }
-
-const DELETE_POST_MUTATION = gql`
-    mutation deletePost($postId:ID!) {
-        deletePost(postId: $postId)
-    }
-`;
-
-const DELETE_COMMENT_MUTATION = gql`
-  mutation deleteComment($postId: ID!, $commentId: ID!) {
-    deleteComment(postId: $postId, commentId: $commentId) {
-      id
-      comments {
-        id
-        username
-        createdAt
-        body
-      }
-      commentCount
-    }
-  }
-`;
 
 export default DeleteButton;

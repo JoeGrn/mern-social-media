@@ -9,11 +9,13 @@ import Post from "../components/Post";
 import PostForm from "../components/PostForm";
 import { FETCH_POSTS_QUERY } from "../gql/fetchPostsQuery";
 
+import { IPost } from '../types/types'
+
 const Home = (): JSX.Element => {
   const { loading, data } = useQuery(FETCH_POSTS_QUERY);
   const { user } = useContext(AuthContext);
 
-  const posts: any = data && data.getPosts;
+  const posts: [IPost] = data && data.getPosts;
 
   return (
     <Grid columns={3}>
@@ -31,7 +33,7 @@ const Home = (): JSX.Element => {
         ) : (
             <Transition.Group>
             {posts &&
-              posts.map((post: any) => (
+              posts.map((post: IPost) => (
                 <Grid.Column key={post.id} style={{ marginBottom: 20 }}>
                   <Post post={post} />
                 </Grid.Column>

@@ -9,6 +9,9 @@ import { RouteComponentProps } from "react-router-dom";
 import { AuthContext } from '../context/auth';
 import LikeButton from '../components/LikeButton';
 import DeleteButton from '../components/DeleteButton';
+
+import { IAuthUser } from '../types/types'
+
 interface MatchParams {
     postId: string
 }

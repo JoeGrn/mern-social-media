@@ -9,7 +9,15 @@ import DeleteButton from './DeleteButton';
 import HoverText from './HoverText'
 
 const Post = ({
-    post: { body, id, username, createdAt, likeCount, commentCount, likes },
+    post: {
+        body,
+        id,
+        username,
+        createdAt,
+        likeCount,
+        commentCount,
+        likes
+    }
 }: any): JSX.Element => {
     const { user } = useContext(AuthContext);
 
