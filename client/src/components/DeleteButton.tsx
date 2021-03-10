@@ -18,20 +18,24 @@ const DeleteButton = ({ postId, commentId, callback }: PropTypes): JSX.Element =
     const [deleteMutation] = useMutation(mutation, {
         update(cache) {
             setConfirmOpen(false)
-            const data: any = cache.readQuery({
-                query: FETCH_POSTS_QUERY
-            })
-            const postToDelete = data.getPosts.filter((p: any) => p.id === postId);
-            cache.evict(postToDelete[0].id)
-            cache.gc()
+            if (!commentId) {
+                const data: any = cache.readQuery({
+                    query: FETCH_POSTS_QUERY
+                })
+                const postToDelete = data.getPosts.filter((post: any) => post.id === postId);
+                cache.evict(postToDelete[0].id)
+                cache.gc()
+            }
             if (callback) {
                 callback()
             }
         },
         variables: {
-            postId
+            postId,
+            commentId
         }
     })
+
     return (
         <>
             <Button

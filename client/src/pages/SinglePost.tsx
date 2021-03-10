@@ -43,7 +43,6 @@ const SinglePost = ({ match, history }: PropTypes): JSX.Element => {
     if (loading) {
         postMarkup = <p>Loading...</p>
     } else {
-        console.log(data)
         const { getPost } = data
         const {
             id,
@@ -64,6 +63,8 @@ const SinglePost = ({ match, history }: PropTypes): JSX.Element => {
                     <Grid.Column width={10}>
                         <Card fluid>
                             <Card.Content>
+                                {console.log(moment(createdAt).fromNow())}
+                                {console.log(createdAt)}
                                 <Card.Header>{username}</Card.Header>
                                 <Card.Meta>{moment(createdAt).fromNow()}</Card.Meta>
                                 <Card.Description>{body}</Card.Description>
@@ -116,10 +117,8 @@ const SinglePost = ({ match, history }: PropTypes): JSX.Element => {
                         )}
                         {comments.map((comment: any) => (
                             <Card fluid key={comment.id}>
-                                {console.log(comment)}
-
                                 <Card.Content>
-                                    {user && user.username === comment.username && (
+                                    {user && user.user.username === comment.username && (
                                         <DeleteButton postId={id} commentId={comment.id} />
                                     )}
                                     <Card.Header>{comment.username}</Card.Header>
