@@ -63,8 +63,6 @@ const SinglePost = ({ match, history }: PropTypes): JSX.Element => {
                     <Grid.Column width={10}>
                         <Card fluid>
                             <Card.Content>
-                                {console.log(moment(createdAt).fromNow())}
-                                {console.log(createdAt)}
                                 <Card.Header>{username}</Card.Header>
                                 <Card.Meta>{moment(createdAt).fromNow()}</Card.Meta>
                                 <Card.Description>{body}</Card.Description>
