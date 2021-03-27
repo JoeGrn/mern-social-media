@@ -3,10 +3,10 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 declare const process: {
-  env: {
-    DB_STRING: string;
-    JWT_KEY: string;
-  };
+    env: {
+        DB_STRING: string;
+        JWT_KEY: string;
+    };
 };
 
 export const DB_STRING: string = process.env.DB_STRING;

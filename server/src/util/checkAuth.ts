@@ -2,11 +2,12 @@ import jwt from 'jsonwebtoken';
 import { AuthenticationError } from 'apollo-server'
 
 import { JWT_KEY } from '../constants'
+import { IContext } from '../types'
 
-export default (context: any): any => {
-    const authHeader = context.req.headers.authorization;
+const checkAuth = (context: IContext): any => {
+    const authHeader: string = context.req.headers.authorization;
     if (authHeader) {
-        const token = authHeader.split('Bearer ')[1];
+        const token: string = authHeader.split('Bearer ')[1];
         if (token) {
             try {
                 const user = jwt.verify(token, JWT_KEY)
@@ -19,3 +20,5 @@ export default (context: any): any => {
     }
     throw new Error('Authentication header must be provided')
 }
+
+export default checkAuth;
