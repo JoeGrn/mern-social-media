@@ -3,6 +3,8 @@ import { AuthenticationError, UserInputError } from 'apollo-server';
 import Post from '../../models/Post';
 import checkAuth from '../../util/checkAuth';
 
+import { IContext, ILike, IPost, IUser, ICreatePostArgs, IDeletePostArgs, ILikePostArgs } from '../../interfaces';
+
 export default {
     Query: {
         async getPosts() {
@@ -27,9 +29,8 @@ export default {
         },
     },
     Mutation: {
-        async createPost(_: any, args: any, context: any) {
-            const user: any = checkAuth(context);
-            const body: string = args.body;
+        async createPost(_: any, { body }: ICreatePostArgs, context: any) {
+            const user: IUser = checkAuth(context);
 
             if (body.trim() === '') {
                 throw new UserInputError('Post body cannot be empty');
@@ -50,9 +51,8 @@ export default {
 
             return post;
         },
-        async deletePost(_: any, args: any, context: any) {
-            const user: any = checkAuth(context);
-            const postId: string = args.postId;
+        async deletePost(_: any, { postId }: IDeletePostArgs, context: IContext) {
+            const user: IUser = checkAuth(context);
 
             try {
                 const post: any = await Post.findById(postId);
@@ -66,16 +66,15 @@ export default {
                 throw new Error(e.message);
             }
         },
-        async likePost(_: any, args: any, context: any) {
-            const user: any = checkAuth(context);
-            const postId: string = args.postId;
+        async likePost(_: any, { postId }: ILikePostArgs, context: IContext) {
+            const user: IUser = checkAuth(context);
 
             let post: any = await Post.findById(postId);
 
             if (post) {
-                if (post.likes.find((like: any) => like.username === user.username)) {
+                if (post.likes.find((like: ILike) => like.username === user.username)) {
                     post.likes = post.likes.filter(
-                        (like: any) => like.username !== user.username,
+                        (like: ILike) => like.username !== user.username,
                     );
                     await post.save();
                 } else {
@@ -95,8 +94,8 @@ export default {
     },
     Subscription: {
         newPost: {
-            subscribe: (_: any, __: any, pubsub: any) =>
-                pubsub.pubsub.asyncIterator('NEW_POST'),
+            subscribe: (_: any, __: any, context: any) =>
+                context.pubsub.asyncIterator('NEW_POST'),
         },
     },
 };

@@ -1,4 +1,4 @@
-import { IErrors, IRegisterInput } from '../types'
+import { IErrors } from '../interfaces'
 
 export const validateRegisterInput = (
     username: string,

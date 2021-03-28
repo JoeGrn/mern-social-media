@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { JWT_KEY } from '../constants';
 
-import { IUser } from '../types';
+import { IUser } from '../interfaces';
 
 export const generateToken = (user: IUser): string => {
     const token = jwt.sign(

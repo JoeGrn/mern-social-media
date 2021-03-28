@@ -8,11 +8,11 @@ import {
     validateLoginInput,
 } from '../../util/validators';
 
-import { IRegisterInput, ILoginInput } from '../../types'
+import { IRegisterArgs, ILoginArgs, IUser } from '../../interfaces'
 
 export default {
     Mutation: {
-        async register(_: any, { username, password, confirmPassword, email }: IRegisterInput) {
+        async register(_: any, { username, password, confirmPassword, email }: IRegisterArgs) {
             const { isValid, errors } = validateRegisterInput(
                 username,
                 email,
@@ -51,14 +51,14 @@ export default {
                 token
             };
         },
-        async login(_: any, { username, password }: ILoginInput) {
+        async login(_: any, { username, password }: ILoginArgs) {
             const { isValid, errors } = validateLoginInput(username, password);
 
             if (!isValid) {
                 throw new UserInputError('Errors', { errors });
             }
 
-            const user: any = await User.findOne({ username });
+            const user: IUser | null = await User.findOne({ username });
 
             if (!user) {
                 errors.general = 'Username not found';

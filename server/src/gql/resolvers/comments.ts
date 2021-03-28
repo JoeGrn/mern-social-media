@@ -1,14 +1,14 @@
 import { AuthenticationError, UserInputError } from 'apollo-server';
+import { Document } from 'mongoose';
 
 import Post from '../../models/Post';
 import checkAuth from '../../util/checkAuth';
 
-import { IContext } from '../../types'
+import { IContext, IComment, ICreateCommentArgs, IDeleteCommentArgs, IPost } from '../../interfaces'
 
 export default {
     Mutation: {
-        async createComment(_: any, args: { postId: string, body: string }, context: any) {
-            const { postId, body } = args;
+        async createComment(_: any, { postId, body }: ICreateCommentArgs, context: IContext) {
             const user: { username: string } = checkAuth(context);
 
             if (body.trim() === '') {
@@ -33,15 +33,13 @@ export default {
                 throw new UserInputError('Post not found');
             }
         },
-        async deleteComment(_: any, args: { postId: string, commentId: string }, context: any) {
-            const { postId, commentId } = args;
+        async deleteComment(_: any, { postId, commentId }: IDeleteCommentArgs, context: IContext) {
             const user: { username: string } = checkAuth(context);
-
             const post: any = await Post.findById(postId);
 
             if (post) {
-                const commentIndex: any = post.comments.findIndex(
-                    (c: any) => c.id === commentId,
+                const commentIndex: number = post.comments.findIndex(
+                    (c: IComment) => c.id === commentId,
                 );
 
                 if (commentIndex === -1)
