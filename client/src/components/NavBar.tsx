@@ -3,12 +3,13 @@ import { Menu } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 
 import { AuthContext } from "../context/auth";
+import { IAuthUser } from '../interfaces'
 
 const NavBar = (): JSX.Element => {
   const pathName = window.location.pathname;
   const path = pathName === "/" ? "home" : pathName.substr(1);
   const [activeItem, setActiveItem] = useState(path);
-  const { user, logout }: any = useContext(AuthContext);
+  const { user, logout }: IAuthUser = useContext(AuthContext);
 
   const handleItemClick = (e: any, { name }: any) => setActiveItem(name);
 
@@ -23,7 +24,7 @@ const NavBar = (): JSX.Element => {
       <Menu.Menu position="right">
         <Menu.Item
           name="logout"
-          onClick={logout}
+          onClick={() => logout()}
         />
       </Menu.Menu>
     </Menu>

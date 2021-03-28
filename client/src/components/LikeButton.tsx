@@ -6,16 +6,16 @@ import { useMutation } from "@apollo/client";
 
 import HoverText from './HoverText'
 
-interface PropTypes {
+interface Props {
     user: {
         username: string
     },
     id: number,
-    likes: [string],
+    likes: Array<string>,
     likeCount: number
 }
 
-const LikeButton = ({ user, id, likes, likeCount }: PropTypes): JSX.Element => {
+const LikeButton = ({ user, id, likes, likeCount }: Props): JSX.Element => {
     const [isLiked, setIsLiked] = useState(false);
 
     useEffect(() => {

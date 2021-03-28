@@ -8,6 +8,18 @@ import LikeButton from './LikeButton';
 import DeleteButton from './DeleteButton';
 import HoverText from './HoverText'
 
+interface Props {
+    post: {
+        body: string
+        id: number
+        username: string
+        createdAt: string
+        likeCount: number
+        commentCount: number
+        likes: Array<string>
+    }
+}
+
 const Post = ({
     post: {
         body,
@@ -18,7 +30,7 @@ const Post = ({
         commentCount,
         likes
     }
-}: any): JSX.Element => {
+}: Props): JSX.Element => {
     const { user } = useContext(AuthContext);
 
     return (

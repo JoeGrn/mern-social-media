@@ -10,6 +10,8 @@ const Login = (props: any) => {
   const context: any = useContext(AuthContext)
   const [errors, setErrors]: any = useState({});
 
+  console.log(errors)
+
   const { onChange, onSubmit, values } = useForm(loginUserCallback, {
     username: "",
     email: "",
@@ -23,6 +25,7 @@ const Login = (props: any) => {
       props.history.push("/");
     },
     onError(error: any) {
+        console.log(error)
       setErrors(error.graphQLErrors[0].extensions.exception.errors);
     },
     variables: values,

@@ -20,7 +20,7 @@ export interface ILike {
     username: string
 }
 
-export interface IAuthUser {
+export interface IAuthUser extends IUser {
     login: Function
     logout: Function
     user: IUser

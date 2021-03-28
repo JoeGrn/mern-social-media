@@ -5,10 +5,10 @@ import { Button, Icon, Confirm } from 'semantic-ui-react'
 import { FETCH_POSTS_QUERY, DELETE_POST_MUTATION, DELETE_COMMENT_MUTATION } from '../gql';
 import HoverText from './HoverText'
 
-import { IPost } from '../types/types'
+import { IPost } from '../interfaces'
 
 interface Props {
-    postId?: string
+    postId?: string| number
     commentId?: string
     callback?: any
 }
@@ -24,7 +24,6 @@ const DeleteButton = ({ postId, commentId, callback }: Props ): JSX.Element => {
                 const cacheResponse: any = cache.readQuery({
                     query: FETCH_POSTS_QUERY
                 })
-                console.log(cacheResponse)
                 const postToDelete = cacheResponse.getPosts.filter((post: IPost) => post.id === postId);
                 cache.evict(postToDelete[0].id)
                 cache.gc()

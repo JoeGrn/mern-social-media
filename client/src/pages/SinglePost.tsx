@@ -10,18 +10,18 @@ import { AuthContext } from '../context/auth';
 import LikeButton from '../components/LikeButton';
 import DeleteButton from '../components/DeleteButton';
 
-import { IAuthUser } from '../types/types'
+import { IAuthUser } from '../interfaces'
 
 interface MatchParams {
     postId: string
 }
-interface PropTypes extends RouteComponentProps<MatchParams> {
+interface IProps extends RouteComponentProps<MatchParams> {
 }
 
-const SinglePost = ({ match, history }: PropTypes): JSX.Element => {
+const SinglePost = ({ match, history }: IProps): JSX.Element => {
     const postId = match.params.postId
-    const user: any = useContext(AuthContext)
-    const commentInputRef: any = useRef(null);
+    const user: IAuthUser = useContext(AuthContext)
+    const commentInputRef = useRef<HTMLInputElement>(null);
     const [comment, setComment] = useState('');
 
     const { data, loading } = useQuery(FETCH_POST_QUERY, {
@@ -32,7 +32,9 @@ const SinglePost = ({ match, history }: PropTypes): JSX.Element => {
     const [submitComment] = useMutation(SUBMIT_COMMENT_MUTATION, {
         update() {
             setComment('');
-            commentInputRef.current.blur();
+            if(commentInputRef.current !== null) {
+                commentInputRef.current.blur();
+            }
         },
         variables: {
             postId,

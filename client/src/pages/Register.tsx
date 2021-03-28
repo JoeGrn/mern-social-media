@@ -4,10 +4,12 @@ import gql from "graphql-tag";
 import { useMutation } from "@apollo/client";
 
 import { useForm } from "../hooks/useForm";
-import { AuthContext } from '../context/auth'
+import { AuthContext } from '../context/auth';
+
+import { IAuthUser } from '../interfaces';
 
 const Register = (props: any): JSX.Element => {
-  const context: any = useContext(AuthContext)
+  const context: IAuthUser = useContext(AuthContext)
   const [errors, setErrors]: any = useState({});
 
   const { onChange, onSubmit, values } = useForm(registerUserCallback, {
