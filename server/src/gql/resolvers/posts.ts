@@ -3,22 +3,31 @@ import { AuthenticationError, UserInputError } from 'apollo-server';
 import Post from '../../models/Post';
 import checkAuth from '../../util/checkAuth';
 
-import { IContext, ILike, IPost, IUser, ICreatePostArgs, IDeletePostArgs, ILikePostArgs } from '../../interfaces';
+import {
+    IContext,
+    ILike,
+    IPost,
+    IUser,
+    ICreatePostArgs,
+    IDeletePostArgs,
+    ILikePostArgs,
+    IGetPostArgs
+} from '../../interfaces';
 
 export default {
     Query: {
-        async getPosts() {
+        async getPosts(): Promise<Array<IPost>> {
             try {
-                const posts = await Post.find().sort({ createdAt: -1 });
+                const posts: Array<IPost> = await Post.find().sort({ createdAt: -1 });
                 return posts;
             } catch (e) {
                 throw new Error(e.message);
             }
         },
-        async getPost(_: any, args: any) {
-            const postId: string = args.postId;
+        async getPost(_: any, args: IGetPostArgs) {
+            const { postId } = args;
             try {
-                const post = await Post.findById(postId);
+                const post: IPost | null = await Post.findById(postId);
                 if (!post) {
                     throw new Error('Post not found');
                 }
@@ -29,34 +38,38 @@ export default {
         },
     },
     Mutation: {
-        async createPost(_: any, { body }: ICreatePostArgs, context: any) {
+        async createPost(_: any, args: ICreatePostArgs, context: IContext): Promise<IPost> {
+            const { body } = args;
             const user: IUser = checkAuth(context);
 
             if (body.trim() === '') {
                 throw new UserInputError('Post body cannot be empty');
             }
 
-            const newPost = new Post({
+            const newPost: IPost = new Post({
                 body,
                 user: user.id,
                 username: user.username,
                 createdAt: new Date().toISOString(),
             });
 
-            const post = await newPost.save();
-
-            context.pubsub.publish('NEW_POST', {
-                newPost: post,
-            });
+            const post: IPost = await newPost.save();
 
             return post;
         },
-        async deletePost(_: any, { postId }: IDeletePostArgs, context: IContext) {
+        async deletePost(_: any, args: IDeletePostArgs, context: IContext): Promise<string>{
+            const { postId } = args;
+
             const user: IUser = checkAuth(context);
 
             try {
-                const post: any = await Post.findById(postId);
-                if (user.username === post.username) {
+                const post: IPost | null = await Post.findById(postId);
+
+                if (!post) {
+                    new UserInputError('Post not found')
+                }
+
+                if (user.username === post?.username) {
                     await post.delete();
                     return 'Post Deleted';
                 } else {
@@ -66,10 +79,11 @@ export default {
                 throw new Error(e.message);
             }
         },
-        async likePost(_: any, { postId }: ILikePostArgs, context: IContext) {
-            const user: IUser = checkAuth(context);
+        async likePost(_: any, args: ILikePostArgs, context: IContext): Promise<IPost> {
+            const { postId } = args
 
-            let post: any = await Post.findById(postId);
+            const user: IUser = checkAuth(context);
+            const post: IPost | null = await Post.findById(postId);
 
             if (post) {
                 if (post.likes.find((like: ILike) => like.username === user.username)) {
@@ -91,11 +105,5 @@ export default {
                 throw new UserInputError('Post not found');
             }
         },
-    },
-    Subscription: {
-        newPost: {
-            subscribe: (_: any, __: any, context: any) =>
-                context.pubsub.asyncIterator('NEW_POST'),
-        },
-    },
+    }
 };

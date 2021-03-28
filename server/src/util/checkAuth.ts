@@ -2,16 +2,18 @@ import jwt from 'jsonwebtoken';
 import { AuthenticationError } from 'apollo-server'
 
 import { JWT_KEY } from '../constants'
-import { IContext } from '../interfaces'
+import { IContext, IUser } from '../interfaces'
 
-const checkAuth = (context: IContext): any => {
+const checkAuth = (context: IContext): IUser => {
     const authHeader: string = context.req.headers.authorization;
     if (authHeader) {
         const token: string = authHeader.split('Bearer ')[1];
         if (token) {
             try {
-                const user = jwt.verify(token, JWT_KEY)
+                const markerUser: object | string = jwt.verify(token, JWT_KEY)
+                const user = <IUser> markerUser
                 return user
+
             } catch (e) {
                 throw new AuthenticationError('Invalid token')
             }

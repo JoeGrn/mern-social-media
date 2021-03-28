@@ -1,5 +1,7 @@
 import { model, Schema } from 'mongoose'
 
+import { IPost } from '../interfaces';
+
 const postSchema = new Schema({
     body: String,
     username: String,
@@ -23,4 +25,4 @@ const postSchema = new Schema({
     }
 })
 
-export default model('Post', postSchema)
+export default model<IPost>('Post', postSchema)

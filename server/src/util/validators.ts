@@ -1,11 +1,16 @@
 import { IErrors } from '../interfaces'
 
+interface IValidationResponse {
+    errors: IErrors
+    isValid: boolean
+}
+
 export const validateRegisterInput = (
     username: string,
     email: string,
     password: string,
     confirmPassword: string,
-) => {
+): IValidationResponse => {
     const errors: IErrors = {};
 
     if (username.trim() === '') {
@@ -31,7 +36,10 @@ export const validateRegisterInput = (
     };
 };
 
-export const validateLoginInput = (username: string, password: string) => {
+export const validateLoginInput = (
+    username: string,
+    password: string
+): IValidationResponse => {
     const errors: IErrors = {};
 
     if (username.trim() === '') {

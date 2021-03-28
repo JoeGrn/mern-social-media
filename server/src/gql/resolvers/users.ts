@@ -12,7 +12,8 @@ import { IRegisterArgs, ILoginArgs, IUser } from '../../interfaces'
 
 export default {
     Mutation: {
-        async register(_: any, { username, password, confirmPassword, email }: IRegisterArgs) {
+        async register(_: any, args: IRegisterArgs) {
+            const { username, password, confirmPassword, email } = args
             const { isValid, errors } = validateRegisterInput(
                 username,
                 email,
@@ -23,7 +24,7 @@ export default {
                 throw new UserInputError('Errors', { errors });
             }
 
-            const user = await User.findOne({ username });
+            const user: IUser | null = await User.findOne({ username });
             if (user) {
                 throw new UserInputError('Username Taken', {
                     errors: {
@@ -34,14 +35,14 @@ export default {
 
             const hashedPassword: string = await bcrypt.hash(password, 12);
 
-            const newUser = new User({
+            const newUser: IUser | null = new User({
                 email: email,
                 username: username,
                 password: hashedPassword,
                 createdAt: new Date().toISOString(),
             });
 
-            const registeredUser: any = await newUser.save();
+            const registeredUser: IUser = await newUser.save();
 
             const token: string = generateToken(registeredUser);
 
@@ -51,7 +52,8 @@ export default {
                 token
             };
         },
-        async login(_: any, { username, password }: ILoginArgs) {
+        async login(_: any, args: ILoginArgs) {
+            const { username, password } = args.loginInput
             const { isValid, errors } = validateLoginInput(username, password);
 
             if (!isValid) {
@@ -66,6 +68,7 @@ export default {
             }
 
             const match: boolean = await bcrypt.compare(password, user.password);
+
             if (!match) {
                 errors.general = 'Invalid Password';
                 throw new UserInputError('Invalid Password', { errors });

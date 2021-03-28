@@ -16,8 +16,5 @@ export = {
         ...usersResolvers.Mutation,
         ...postsResolvers.Mutation,
         ...commentsResolvers.Mutation,
-    },
-    Subscription: {
-        ...postsResolvers.Subscription,
-    },
+    }
 };

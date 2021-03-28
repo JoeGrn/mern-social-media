@@ -21,7 +21,7 @@ export interface IPost extends Document {
 }
 
 export interface ILike {
-    id: string
+    id?: string
     createdAt: string
     username: string
 }
@@ -56,8 +56,10 @@ export interface IRegisterArgs {
     confirmPassword: string
 }
 export interface ILoginArgs {
-    username: string
-    password: string
+    loginInput: {
+        username: string
+        password: string
+    }   
 }
 
 export interface ICreateCommentArgs {
@@ -79,5 +81,8 @@ export interface IDeletePostArgs {
 }
 
 export interface ILikePostArgs {
+    postId: string
+}
+export interface IGetPostArgs {
     postId: string
 }
