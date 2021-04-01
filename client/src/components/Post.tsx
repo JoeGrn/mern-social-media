@@ -6,9 +6,9 @@ import moment from "moment";
 import { AuthContext } from "../context/auth";
 import LikeButton from './LikeButton';
 import DeleteButton from './DeleteButton';
-import HoverText from './HoverText'
+import HoverText from './HoverText';
 
-interface Props {
+interface IProps {
     post: {
         body: string
         id: number
@@ -30,7 +30,7 @@ const Post = ({
         commentCount,
         likes
     }
-}: Props): JSX.Element => {
+}: IProps): JSX.Element => {
     const { user } = useContext(AuthContext);
 
     return (

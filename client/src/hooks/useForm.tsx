@@ -1,19 +1,27 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
-export const useForm = (callback: Function, initalState: Object = {}) => {
-  const [values, setValues]: any = useState(initalState);
-  const onChange = (e: any) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
+interface IFormValues {
+    body?: string
+    username?: string
+    email?: string
+    password?: string
+    confirmPassword?: string
+}
 
-  const onSubmit = (e: any) => {
-    e.preventDefault();
-    callback();
-  };
+export const useForm = (callback: Function, initalState: IFormValues = {}) => {
+    const [values, setValues] = useState(initalState);
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setValues({ ...values, [e.target.name]: e.target.value });
+    };
 
-  return {
-    onChange,
-    onSubmit,
-    values,
-  };
+    const onSubmit = (e: React.SyntheticEvent) => {
+        e.preventDefault();
+        callback();
+    };
+
+    return {
+        onChange,
+        onSubmit,
+        values,
+    };
 };

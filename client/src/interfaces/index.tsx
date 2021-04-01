@@ -3,9 +3,9 @@ export interface IPost {
     commentCount: number
     comments: Array<Comment>
     createdAt: string
-    id: string
+    id: number | number
     likeCount: number
-    likes: Array<ILike>
+    likes: Array<string>
     username: string
 }
 

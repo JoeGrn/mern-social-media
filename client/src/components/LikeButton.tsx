@@ -4,7 +4,9 @@ import { Link } from "react-router-dom";
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/client";
 
-import HoverText from './HoverText'
+import HoverText from './HoverText';
+
+import { ILike } from '../interfaces';
 
 interface Props {
     user: {

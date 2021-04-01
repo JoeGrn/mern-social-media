@@ -13,6 +13,10 @@ interface Props {
     callback?: any
 }
 
+interface AllTasksResult {
+    getPosts: Array<IPost>
+}
+
 const DeleteButton = ({ postId, commentId, callback }: Props ): JSX.Element => {
     const mutation = commentId ? DELETE_COMMENT_MUTATION : DELETE_POST_MUTATION;
 
@@ -21,10 +25,10 @@ const DeleteButton = ({ postId, commentId, callback }: Props ): JSX.Element => {
         update(cache) {
             setConfirmOpen(false)
             if (!commentId) {
-                const cacheResponse: any = cache.readQuery({
+                const cacheResponse: any = cache.readQuery<AllTasksResult>({
                     query: FETCH_POSTS_QUERY
                 })
-                const postToDelete = cacheResponse.getPosts.filter((post: IPost) => post.id === postId);
+                const postToDelete = cacheResponse!.getPosts.filter((post: IPost) => post.id === postId);
                 cache.evict(postToDelete[0].id)
                 cache.gc()
             }
