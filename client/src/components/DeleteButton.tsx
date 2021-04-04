@@ -8,16 +8,16 @@ import HoverText from './HoverText'
 import { IPost } from '../interfaces'
 
 interface Props {
-    postId?: string| number
+    postId?: string | number
     commentId?: string
     callback?: any
 }
 
-interface AllTasksResult {
+interface ReadQueryResult {
     getPosts: Array<IPost>
 }
 
-const DeleteButton = ({ postId, commentId, callback }: Props ): JSX.Element => {
+const DeleteButton: React.FC<Props> = ({ postId, commentId, callback }) => {
     const mutation = commentId ? DELETE_COMMENT_MUTATION : DELETE_POST_MUTATION;
 
     const [confirmOpen, setConfirmOpen] = useState(false)
@@ -25,10 +25,10 @@ const DeleteButton = ({ postId, commentId, callback }: Props ): JSX.Element => {
         update(cache) {
             setConfirmOpen(false)
             if (!commentId) {
-                const cacheResponse: any = cache.readQuery<AllTasksResult>({
+                const cacheResponse: any = cache.readQuery<ReadQueryResult>({
                     query: FETCH_POSTS_QUERY
                 })
-                const postToDelete = cacheResponse!.getPosts.filter((post: IPost) => post.id === postId);
+                const postToDelete = cacheResponse.getPosts.filter((post: IPost) => post.id === postId);
                 cache.evict(postToDelete[0].id)
                 cache.gc()
             }

@@ -23,7 +23,7 @@ export interface ILike {
 export interface IAuthUser extends IUser {
     login: Function
     logout: Function
-    user: IUser
+    user: IUser 
 }
 
 export interface IUser {

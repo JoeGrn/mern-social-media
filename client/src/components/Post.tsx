@@ -8,7 +8,9 @@ import LikeButton from './LikeButton';
 import DeleteButton from './DeleteButton';
 import HoverText from './HoverText';
 
-interface IProps {
+import { IAuthUser } from '../interfaces';
+
+interface Props {
     post: {
         body: string
         id: number
@@ -20,7 +22,7 @@ interface IProps {
     }
 }
 
-const Post = ({
+const Post: React.FC<Props> = ({
     post: {
         body,
         id,
@@ -28,10 +30,10 @@ const Post = ({
         createdAt,
         likeCount,
         commentCount,
-        likes
+        likes,
     }
-}: IProps): JSX.Element => {
-    const { user } = useContext(AuthContext);
+}) => {
+    const { user } = useContext<IAuthUser>(AuthContext);
 
     return (
         <Card fluid>

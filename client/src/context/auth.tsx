@@ -1,18 +1,22 @@
 import React, { createContext, useReducer } from "react";
 import jwtDecode from "jwt-decode";
 
-import { IUser } from '../interfaces';
+import { IUser, IAuthUser } from '../interfaces';
 
-interface InitialState {
+interface State {
     user: Object | null
 }
+
+type Action =
+    | { type: 'LOGOUT' }
+    | { type: 'LOGIN', payload: { token: string } }
 
 interface DecodedToken {
     user: IUser
     exp: number
 }
 
-const initialState: InitialState = { user: null };
+const initialState: State = { user: null };
 
 if (localStorage.getItem("token")) {
     const token: string | null = localStorage.getItem("token");
@@ -25,13 +29,13 @@ if (localStorage.getItem("token")) {
     }
 }
 
-const AuthContext: any = createContext({
+const AuthContext = createContext({
     user: null,
-    login: (data: any) => { },
+    login: (data: { token: string }) => { },
     logout: () => { },
 });
 
-function authReducer(state: any, action: any) {
+function authReducer(state: State, action: Action) {
     switch (action.type) {
         case "LOGIN":
             return {
@@ -51,7 +55,7 @@ function authReducer(state: any, action: any) {
 function AuthProvider(props: any) {
     const [state, dispatch] = useReducer(authReducer, initialState);
 
-    function login(data: any) {
+    function login(data: { token: string }) {
         localStorage.setItem("token", data.token);
         dispatch({
             type: "LOGIN",

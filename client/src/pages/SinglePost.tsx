@@ -10,17 +10,15 @@ import { AuthContext } from '../context/auth';
 import LikeButton from '../components/LikeButton';
 import DeleteButton from '../components/DeleteButton';
 
-import { IAuthUser } from '../interfaces'
-
 interface MatchParams {
     postId: string
 }
-interface IProps extends RouteComponentProps<MatchParams> {
+interface Props extends RouteComponentProps<MatchParams> {
 }
 
-const SinglePost = ({ match, history }: IProps): JSX.Element => {
+const SinglePost: React.FC<Props> = ({ match, history }) => {
     const postId = match.params.postId
-    const user: IAuthUser = useContext(AuthContext)
+    const user = useContext(AuthContext)
     const commentInputRef = useRef<HTMLInputElement>(null);
     const [comment, setComment] = useState('');
 
@@ -32,7 +30,7 @@ const SinglePost = ({ match, history }: IProps): JSX.Element => {
     const [submitComment] = useMutation(SUBMIT_COMMENT_MUTATION, {
         update() {
             setComment('');
-            if(commentInputRef.current !== null) {
+            if (commentInputRef.current !== null) {
                 commentInputRef.current.blur();
             }
         },

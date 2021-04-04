@@ -5,7 +5,7 @@ interface Props {
     children: JSX.Element
 }
 
-function MyPopup({ content, children }: Props) {
+const MyPopup: React.FC<Props> = ({ content, children }) => {
     return <Popup inverted content={content} trigger={children} />;
 }
 

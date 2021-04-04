@@ -2,19 +2,20 @@ import React, { useState, useContext } from "react";
 import { Form, Button } from "semantic-ui-react";
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/client";
+import { RouteComponentProps } from "react-router-dom";
 
 import { useForm } from "../hooks/useForm";
 import { AuthContext } from '../context/auth'
-
-import { IAuthUser } from '../interfaces';
 
 interface IErrors {
     username?: string
     password?: string
 }
+interface Props extends RouteComponentProps {
+}
 
-const Login = (props: any) => {
-    const context: IAuthUser = useContext(AuthContext)
+const Login: React.FC<Props> = ({ history }) => {
+    const context = useContext(AuthContext)
     const [errors, setErrors] = useState<IErrors>({});
     const { onChange, onSubmit, values } = useForm(loginUserCallback, {
         username: "",
@@ -26,7 +27,7 @@ const Login = (props: any) => {
     const [loginUser, { loading }] = useMutation(LOGIN_USER_MUTATION, {
         update(_, result) {
             context.login(result.data.login)
-            props.history.push("/");
+            history.push("/");
         },
         onError(error: any) {
             setErrors(error.graphQLErrors[0].extensions.exception.errors);

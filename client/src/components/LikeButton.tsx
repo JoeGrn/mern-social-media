@@ -6,8 +6,6 @@ import { useMutation } from "@apollo/client";
 
 import HoverText from './HoverText';
 
-import { ILike } from '../interfaces';
-
 interface Props {
     user: {
         username: string
@@ -17,7 +15,7 @@ interface Props {
     likeCount: number
 }
 
-const LikeButton = ({ user, id, likes, likeCount }: Props): JSX.Element => {
+const LikeButton: React.FC<Props> = ({ user, id, likes, likeCount }) => {
     const [isLiked, setIsLiked] = useState(false);
 
     useEffect(() => {

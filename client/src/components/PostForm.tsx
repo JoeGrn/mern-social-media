@@ -6,7 +6,7 @@ import { useMutation } from "@apollo/client";
 import { useForm } from "../hooks/useForm";
 import { FETCH_POSTS_QUERY } from "../gql/fetchPostsQuery";
 
-const PostForm = (): JSX.Element => {
+const PostForm: React.FC = () => {
     const { values, onChange, onSubmit } = useForm(createPostCallback, {
         body: "",
     });
@@ -17,32 +17,32 @@ const PostForm = (): JSX.Element => {
         refetchQueries: [{ query: FETCH_POSTS_QUERY }],
         onError(error: any) {
             setError(error.graphQLErrors[0].message);
-},
+        },
     });
 
-function createPostCallback() {
-    createPost();
-}
+    function createPostCallback() {
+        createPost();
+    }
 
-return (
-    <>
-        <Form onSubmit={onSubmit}>
-            <h2>Create a post:</h2>
-            <Form.Field>
-                <Form.Input
-                    placeholder="Write a Post!"
-                    name="body"
-                    onChange={onChange}
-                    value={values.body}
-                    error={error}
-                />
-                <Button type="submit" color="blue">
-                    Submit
+    return (
+        <>
+            <Form onSubmit={onSubmit}>
+                <h2>Create a post:</h2>
+                <Form.Field>
+                    <Form.Input
+                        placeholder="Write a Post!"
+                        name="body"
+                        onChange={onChange}
+                        value={values.body}
+                        error={error}
+                    />
+                    <Button type="submit" color="blue">
+                        Submit
           </Button>
-            </Form.Field>
-        </Form>
-    </>
-);
+                </Form.Field>
+            </Form>
+        </>
+    );
 };
 
 const CREATE_POST_MUTATION = gql`

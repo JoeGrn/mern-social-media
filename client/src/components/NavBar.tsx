@@ -5,13 +5,17 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../context/auth";
 import { IAuthUser } from '../interfaces'
 
-const NavBar = (): JSX.Element => {
+interface IEventValue {
+    name: string
+}
+
+const NavBar: React.FC = () => {
     const pathName = window.location.pathname;
     const path = pathName === "/" ? "home" : pathName.substr(1);
     const [activeItem, setActiveItem] = useState(path);
-    const { user, logout }: IAuthUser = useContext(AuthContext);
+    const { user, logout } = useContext(AuthContext);
 
-    const handleItemClick = (e: React.SyntheticEvent, { name }: { name: string }) => setActiveItem(name);
+    const handleItemClick = (e: React.SyntheticEvent, { name }: IEventValue) => setActiveItem(name);
 
     const NavBar = user ? (
         <Menu pointing secondary size="massive" color="blue">
