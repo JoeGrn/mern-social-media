@@ -29,7 +29,7 @@ if (localStorage.getItem("token")) {
     }
 }
 
-const AuthContext = createContext({
+const AuthContext = createContext<IAuthUser>({
     user: null,
     login: (data: { token: string }) => { },
     logout: () => { },

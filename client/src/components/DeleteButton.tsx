@@ -6,9 +6,8 @@ import { FETCH_POSTS_QUERY, DELETE_POST_MUTATION, DELETE_COMMENT_MUTATION } from
 import HoverText from './HoverText'
 
 import { IPost } from '../interfaces'
-
 interface Props {
-    postId?: string | number
+    postId?: string
     commentId?: string
     callback?: any
 }
@@ -25,12 +24,14 @@ const DeleteButton: React.FC<Props> = ({ postId, commentId, callback }) => {
         update(cache) {
             setConfirmOpen(false)
             if (!commentId) {
-                const cacheResponse: any = cache.readQuery<ReadQueryResult>({
+                const cacheResponse = cache.readQuery<ReadQueryResult>({
                     query: FETCH_POSTS_QUERY
                 })
-                const postToDelete = cacheResponse.getPosts.filter((post: IPost) => post.id === postId);
-                cache.evict(postToDelete[0].id)
-                cache.gc()
+                if (cacheResponse) {
+                    const postToDelete = cacheResponse.getPosts.filter((post) => post.id === postId);
+                    cache.evict({ id: postToDelete[0].id })
+                    cache.gc()
+                }
             }
             if (callback) {
                 callback()

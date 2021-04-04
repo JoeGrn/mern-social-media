@@ -3,7 +3,6 @@ import { Menu } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 
 import { AuthContext } from "../context/auth";
-import { IAuthUser } from '../interfaces'
 
 interface IEventValue {
     name: string

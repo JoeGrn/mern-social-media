@@ -5,7 +5,6 @@ import { Grid, Card, Button, Icon, Label, Form } from 'semantic-ui-react';
 import moment from 'moment';
 import { RouteComponentProps } from "react-router-dom";
 
-
 import { AuthContext } from '../context/auth';
 import LikeButton from '../components/LikeButton';
 import DeleteButton from '../components/DeleteButton';
@@ -18,7 +17,7 @@ interface Props extends RouteComponentProps<MatchParams> {
 
 const SinglePost: React.FC<Props> = ({ match, history }) => {
     const postId = match.params.postId
-    const user = useContext(AuthContext)
+    const { user } = useContext(AuthContext)
     const commentInputRef = useRef<HTMLInputElement>(null);
     const [comment, setComment] = useState('');
 
@@ -121,7 +120,7 @@ const SinglePost: React.FC<Props> = ({ match, history }) => {
                         {comments.map((comment: any) => (
                             <Card fluid key={comment.id}>
                                 <Card.Content>
-                                    {user && user.user.username === comment.username && (
+                                    {user && user.username === comment.username && (
                                         <DeleteButton postId={id} commentId={comment.id} />
                                     )}
                                     <Card.Header>{comment.username}</Card.Header>

@@ -7,14 +7,19 @@ import { RouteComponentProps } from "react-router-dom";
 import { useForm } from "../hooks/useForm";
 import { AuthContext } from '../context/auth';
 
-import { IAuthUser } from '../interfaces';
-
 interface Props extends RouteComponentProps {
+}
+
+interface Errors {
+    username?: string
+    email?: string
+    password?: string
+    confirmPassword?: string
 }
 
 const Register: React.FC<Props> = ({ history }) => {
     const context = useContext(AuthContext)
-    const [errors, setErrors]: any = useState({});
+    const [errors, setErrors] = useState<Errors>({});
 
     const { onChange, onSubmit, values } = useForm(registerUserCallback, {
         username: "",
@@ -28,8 +33,8 @@ const Register: React.FC<Props> = ({ history }) => {
             context.login(result.data.register)
             history.push("/");
         },
-        onError(error: any) {
-            setErrors(error.graphQLErrors[0].extensions.exception.errors);
+        onError({ graphQLErrors }) {
+            setErrors(graphQLErrors[0].extensions!.exception.errors);
         },
         variables: values,
     });

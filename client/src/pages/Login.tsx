@@ -29,8 +29,8 @@ const Login: React.FC<Props> = ({ history }) => {
             context.login(result.data.login)
             history.push("/");
         },
-        onError(error: any) {
-            setErrors(error.graphQLErrors[0].extensions.exception.errors);
+        onError(error) {
+            setErrors(error.graphQLErrors[0].extensions!.exception.errors);
         },
         variables: values,
     });

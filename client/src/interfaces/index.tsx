@@ -3,7 +3,7 @@ export interface IPost {
     commentCount: number
     comments: Array<Comment>
     createdAt: string
-    id: number | number
+    id: string
     likeCount: number
     likes: Array<string>
     username: string
@@ -20,10 +20,12 @@ export interface ILike {
     username: string
 }
 
-export interface IAuthUser extends IUser {
+export interface IAuthUser {
     login: Function
     logout: Function
-    user: IUser 
+    user: IUser | null
+    username?: string
+
 }
 
 export interface IUser {

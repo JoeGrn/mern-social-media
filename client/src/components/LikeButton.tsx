@@ -9,8 +9,8 @@ import HoverText from './HoverText';
 interface Props {
     user: {
         username: string
-    },
-    id: number,
+    } | null,
+    id: string,
     likes: Array<string>,
     likeCount: number
 }
